@@ -1,10 +1,10 @@
-# Word Validator Project
+# Implementation of Lexical Analysis
 
 ## Overview
 
 This project implements two distinct approaches to validating Elvish-inspired words:
 
-1. **Prolog Dictionary**: A logic-based implementation using finite state automata to validate words through explicit state transitions.
+1. **Prolog Dictionary**: A logic-based implementation using finite state automata to a set of words given from a small sample of Elvish Lord of the Rings words through explicit state transitions.
 2. **Python Regex Validator**: A pattern-matching implementation using regular expressions to validate words against predefined patterns.
 
 Both implementations serve the same purpose but showcase different programming paradigms and validation techniques.
@@ -51,7 +51,9 @@ The Prolog implementation models a finite state automaton (FSA) that explicitly 
    move(h, k, 'u').
    move(k, z, 'a').
    ```
-   This knowledge base defines all possible state transitions as facts in the form `move(FromState, ToState, Character)`.
+   This knowledge base defines all possible state transitions as facts in the form `move(FromState, ToState, Character)`, which can be visualized here:
+   ![Automata Img](/Automata_Repo//automata_img.drawio.png)
+
 
 2. **Accepting State**:
    ```prolog
@@ -97,8 +99,11 @@ The Prolog implementation models a finite state automaton (FSA) that explicitly 
 Run the Prolog file using a Prolog interpreter such as SWI-Prolog:
 
 ```bash
-swipl -s word_validator.pl -g "run_tests, halt."
-```
+swipl my_quenya.pl
+
+To test a set of predefined valid and non-valid words
+
+?- run_tests.
 
 To test individual words in an interactive session:
 
@@ -154,7 +159,7 @@ The Python implementation uses regular expressions to match words against a pred
 Run the script using Python:
 
 ```bash
-python word_validator.py
+python automata_regex.py
 ```
 
 The program presents an interactive menu with these options:
