@@ -25,7 +25,7 @@ Both implementations serve the same purpose but showcase different programming p
 
 ## Prolog Implementation
 
-### A 
+### A Nondeterministic Finite Automata
 
 The Prolog implementation models a Nondeterministic Finite Automata (NFA) that explicitly defines transitions between states for each character in the input word:
 
@@ -129,9 +129,9 @@ false.
 - **Word Processing**: O(n) where n is the input word length
 - **Backtracking**: Mitigated by the cut operator (!) to prevent exponential behavior
 
-## Python Implementation
+## Regular Expressions (Regex)
 
-### How the Python Works
+### An NFA Approach with the RE Module
 
 The Python implementation uses regular expressions to match words against a predefined pattern:
 
