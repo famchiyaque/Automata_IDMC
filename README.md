@@ -25,9 +25,17 @@ Both implementations serve the same purpose but showcase different programming p
 
 ## Prolog Implementation
 
-### How the Prolog Works
+### A 
 
-The Prolog implementation models a finite state automaton (FSA) that explicitly defines transitions between states for each character in the input word:
+The Prolog implementation models a Nondeterministic Finite Automata (NFA) that explicitly defines transitions between states for each character in the input word:
+
+Usually a deterministic finite automata DFA would have been simpler but there is a special
+case here in this small dictionary between the words 'Alda' and 'Aldalome' where the word 'Alda'
+could be a full valid word, but if there are letters after, may change that state. 
+This means, there must be a state in which you have arrived the exact same way where the last
+checker letter was 'a', and may be an accepted word or continue to check what's left.
+The fact that there is more logic needed to decide what happens in this state implies multiplie
+transition paths, while a DFA only allows 1 single path.
 
 1. **Knowledge Base**:
    ```prolog
@@ -190,40 +198,6 @@ Alqua: True
 - **Pattern Matching**: O(n) where n is the length of the input string
 - **Menu Operation**: O(1) per interaction
 - **Batch Testing**: O(m × n) where m is the number of words and n is the average word length
-
-## Comparison Between Implementations
-
-| Feature | Python (Regex) | Prolog (FSM) |
-|---------|---------------|--------------|
-| **Paradigm** | Imperative | Declarative |
-| **Approach** | Pattern matching | State transitions |
-| **Expressiveness** | Compact but less flexible | Verbose but highly flexible |
-| **Readability** | Concise but potentially cryptic | Explicit and transparent |
-| **Context Sensitivity** | Limited | Natural with special case handling |
-| **User Interface** | Interactive menu | Query-based |
-| **Word Representation** | String | Character list |
-| **Validation Result** | Boolean return | Success/failure via unification |
-| **Implementation Size** | Smaller codebase | Larger knowledge base |
-| **Maintainability** | Harder to modify complex patterns | Easier to add/modify state transitions |
-| **Error Handling** | Limited diagnostics | Can provide detailed path tracing |
-
-### Key Architectural Differences:
-
-1. **Representation of Valid Words**:
-   - **Python**: Directly encodes all valid patterns in a single regex
-   - **Prolog**: Models the valid paths through character-by-character state transitions
-
-2. **Context Sensitivity**:
-   - **Python**: Requires complex regex constructs for context-sensitive rules
-   - **Prolog**: Naturally handles context-dependent rules (e.g., 'a' behavior differs based on position)
-
-3. **Processing Model**:
-   - **Python**: One-time pattern matching against the entire word
-   - **Prolog**: Sequential character-by-character processing with state tracking
-
-4. **Extensibility**:
-   - **Python**: Requires regex modification for new words or patterns
-   - **Prolog**: Just add new state transitions to support new words
 
 ## Valid Words
 
