@@ -52,7 +52,7 @@ The Prolog implementation models a finite state automaton (FSA) that explicitly 
    move(k, z, 'a').
    ```
    This knowledge base defines all possible state transitions as facts in the form `move(FromState, ToState, Character)`, which can be visualized here:
-   ![Automata Img](/Automata_Repo//automata_img.drawio.png)
+   ![Automata Img](automata_img.drawio.png)
 
 
 2. **Accepting State**:
