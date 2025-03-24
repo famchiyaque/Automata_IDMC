@@ -1,7 +1,11 @@
 import re
 
 # Define a custom regex pattern for valid words
-valid_pattern = re.compile(r'^(A(i(g|n|d)|l(g|q|o)|d(lómë)?|q(ua)?))$')
+# valid_pattern = re.compile(r'^(A(i(g|n|d)|l(g|q|o)|d(lómë)?|q(ua)?))$')
+# valid_pattern = re.compile(r'^(A(i(g|n|d)|l(g|q|o)|d(lómë)?|q(ua)?))$')
+# Add the re.IGNORECASE flag to make it case-insensitive
+# valid_pattern = re.compile(r'^(A(i(g|n|d)|l(g|q|o)|d(lómë)?|q(ua)?)).*$', re.IGNORECASE)
+valid_pattern = re.compile(r'^(Aiglos|Ainu|Aid|Alg|Alq|Alo|Alda(lómë)?|Alqua?)$')
 
 def validate_word(word):
     return bool(valid_pattern.match(word))
