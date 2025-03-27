@@ -115,7 +115,7 @@ Both implementations serve the same purpose but showcase different programming p
             # writeln([CurrState, FixedChar]),
             move(CurrState, NewState, FixedChar)
         ),
-        ```
+    ```
 
     this part of the main 'consult' rule uses if/else logic to check that in the case where the current character is 'a' and the current state *g*, if the rest of the list is empty in that moment (for the case of the word 'Alda'), then the state is manually moved to *z*, and if there are more letters to check, then moved to *j*.
 
@@ -139,7 +139,7 @@ true.
 false.
 ```
 
-the above format should be used to test custom input, and always starting state a:
+the above format should be used to test custom input, and always starting state a:<br>
     ['char', 'char', 'char', etc.]
 
 <!-- ### Prolog Time Complexity
