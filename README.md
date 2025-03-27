@@ -16,7 +16,7 @@ Coursera says that Lexical analysis, or scanning, is a part of natural language 
 According to the same source, there are two primary methods for this process:
 the <b>Loop and Switch</b> method, and the <b>Regular Expressions and Finite
 Automata</b> method.
-![Coursera on Lexical Analysis](https://www.coursera.org/articles/lexical-analysis)
+[Coursera on Lexical Analysis](https://www.coursera.org/articles/lexical-analysis)
 
 For this project, we will be implementing the second of the primary types, meaning both the Automata and Regular Expressions.
 
