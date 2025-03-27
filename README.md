@@ -117,7 +117,7 @@ Both implementations serve the same purpose but showcase different programming p
         ),
         ```
 
-        this part of the main 'consult' rule uses if/else logic to check that in the case where the current character is 'a' and the current state *g*, if the rest of the list is empty in that moment (for the case of the word 'Alda'), then the state is manually moved to *z*, and if there are more letters to check, then moved to *j*.
+    this part of the main 'consult' rule uses if/else logic to check that in the case where the current character is 'a' and the current state *g*, if the rest of the list is empty in that moment (for the case of the word 'Alda'), then the state is manually moved to *z*, and if there are more letters to check, then moved to *j*.
 
 #### How to Use
 Run the Prolog file using a Prolog interpreter such as SWI-Prolog:
@@ -139,7 +139,7 @@ true.
 false.
 ```
 
-    the above format should be used to test custom input, and always starting state a:
+the above format should be used to test custom input, and always starting state a:
     ['char', 'char', 'char', etc.]
 
 <!-- ### Prolog Time Complexity
@@ -148,14 +148,14 @@ false.
 - **Word Processing**: O(n) where n is the input word length
 - **Backtracking**: Mitigated by the cut operator (!) to prevent exponential behavior -->
 
-### 3. Regular Expressions (Regex) in Python
+### 2. Regular Expressions (Regex) in Python
 
 #### Theory
 <!-- ### An NFA Approach with the RE Module -->
 The Regex method is much simpler than the automata in prolog, using an existing pattern-matching language that's very widely used and available. 
 With regex, a single expression using regex syntax can be used repeatedly to gauge whether the input is a match (valid word), or not (invalid word).
 
-The Python implementation defines this expression using the RE python module, and simply returns checks whether the input is a match:
+The Python implementation defines this expression using the RE python module, and simply checks whether the input is a match:
 
 #### The Code
 
