@@ -2,40 +2,40 @@
 
 ## Overview
 
-This project implements two distinct approaches to validating Elvish-inspired words:
+This project offers two approaches to validate a small dictionary of Elvish-inspired words, which in this case is supposed to simulate a very simple lexical analysis, like those used by real programming languages during compilation.
 
-1. **Prolog Dictionary**: A logic-based implementation using finite state automata to a set of words given from a small sample of Elvish Lord of the Rings words through explicit state transitions.
+Lexical analysis, or scanning, is a part of natural language processing (NLP)
+where the source code is read character by character to produce tokens for the 
+next stage of compilation, and while the program is at it, verifies the grammar
+of the code, including syntax and spelling.
+
+According to the same source, there are two primary methods for this process:
+the <b>Loop and Switch</b> method, and the <b>Regular Expressions and Finite
+Automata</b> method.
+
+For this project, we will be implementing the second of the primary types, meaning both the Automata and Regular Expressions.
+
+### 1. Automata Dictionary in Prolog
+
+An Automata are versions of finite state machines, or mechanisms to track 
+and map the state of something as input is handled. 
+In this case, we want to track and map the state of word validity as we read the given input, a word, character by character to determine whether it is a valid word of our dictionary.
+This image below shows the different states and transitions used to track the word as its characters are read one by one.
+![Automata Img](automata_img.drawio.png)
+
+It's important to note here that this automata is a **Nondeterministic Finite Automata** (NFA), which according to Unstop.com, means that the automata may allow for
+multiple possible state transitions from one state to another with the same input.
+
+This is because there is a single case in our small dictionary where the word 'Alda' should move from the *g* state to the final accepted *z* state, meanwhile the word 'Aldalómë', having the exact same first four letters, will also be in the *g* state, but will need to continue on to another, non-final state for 
+continued validation.
+
+This is why a **Deterministic Finite Automata (DFA) cannot be used here**, which only allows for a single possible transition path between states.
+
+#### The Code
+<!-- 1. **Prolog Dictionary**: A logic-based implementation using finite state automata to a set of words given from a small sample of Elvish Lord of the Rings words through explicit state transitions.
 2. **Python Regex Validator**: A pattern-matching implementation using regular expressions to validate words against predefined patterns.
 
-Both implementations serve the same purpose but showcase different programming paradigms and validation techniques.
-
-## Table of Contents
-- [Project Overview](#overview)
-- [Prolog Implementation](#prolog-implementation)
-  - [How It Works](#how-the-prolog-works)
-  - [Usage](#prolog-usage)
-  - [Time Complexity](#prolog-time-complexity)
-- [Python Implementation](#python-implementation)
-  - [How It Works](#how-the-python-works)
-  - [Usage](#python-usage)
-  - [Time Complexity](#python-time-complexity)
-- [Comparison Between Implementations](#comparison-between-implementations)
-- [Valid Words](#valid-words)
-- [References](#references)
-
-## Prolog Implementation
-
-### A Nondeterministic Finite Automata
-
-The Prolog implementation models a Nondeterministic Finite Automata (NFA) that explicitly defines transitions between states for each character in the input word:
-
-Usually a deterministic finite automata DFA would have been simpler but there is a special
-case here in this small dictionary between the words 'Alda' and 'Aldalome' where the word 'Alda'
-could be a full valid word, but if there are letters after, may change that state. 
-This means, there must be a state in which you have arrived the exact same way where the last
-checker letter was 'a', and may be an accepted word or continue to check what's left.
-The fact that there is more logic needed to decide what happens in this state implies multiplie
-transition paths, while a DFA only allows 1 single path.
+Both implementations serve the same purpose but showcase different programming paradigms and validation techniques. -->
 
 1. **Knowledge Base**:
    ```prolog
@@ -59,15 +59,13 @@ transition paths, while a DFA only allows 1 single path.
    move(h, k, 'u').
    move(k, z, 'a').
    ```
-   This knowledge base defines all possible state transitions as facts in the form `move(FromState, ToState, Character)`, which can be visualized here:
-   ![Automata Img](automata_img.drawio.png)
-
+   This knowledge base defines all possible state transitions as facts in the form `move(FromState, ToState, Character)`, just like how they appear in the image of the automata above.
 
 2. **Accepting State**:
    ```prolog
    accept(z).
    ```
-   Defines that state 'z' is the only accepting state, meaning any word that correctly reaches this state is valid.
+   Defines that state 'z' is the only accepting state, meaning any word that correctly reaches this state is valid, and any word that does not is invalid.
 
 3. **Character Encoding Fix**:
    ```prolog
@@ -82,28 +80,38 @@ transition paths, while a DFA only allows 1 single path.
    consult_dic([], CurrState) :-
        accept(CurrState), !.
    
-   % Allow early termination
-   consult_dic([], CurrState) :-
-       move(CurrState, z, ''),
-       accept(z), !.
-   
-   % Process each character
-   consult_dic([Char1 | Rest], CurrState) :-
-       % Special handling for 'a' in state 'g'
-       (CurrState = g, Char1 = 'a' ->
-           (Rest = [] -> 
-               move(g, z, 'a');
-               move(g, j, 'a')
-           )
-       ;
-           move(CurrState, NewState, Char1)
-       ),
-       consult_dic(Rest, NewState).
+   % Recursive case: Process each character step-by-step
+    consult([CurrChar | Rest], CurrState) :-
+        fix_char(CurrChar, FixedChar),
+        (FixedChar = 'a', CurrState = g -> 
+            (Rest = [] ->
+                move(g, z, 'a'), % if rest is empty, then 'Alda' is moved directly to z state
+                NewState = z;    % set NewState to z
+                move(g, j, 'a'), % else, continue with extra letters after 'Alda'
+                NewState = j     % set NewState to j
+            );
+            # writeln([CurrState, FixedChar]),
+            move(CurrState, NewState, FixedChar)
+        ),
+        consult(Rest, NewState).
    ```
    The core logic recursively processes each character and transitions between states, with special handling for context-sensitive cases.
 
-### Prolog Usage
+5. **Added Logic for NFA funcionality**
+    ```prolog
+    (FixedChar = 'a', CurrState = g -> 
+            (Rest = [] ->
+                NewState = z;    % set NewState to z
+                NewState = j     % set NewState to j
+            );
+            # writeln([CurrState, FixedChar]),
+            move(CurrState, NewState, FixedChar)
+        ),
+        ```
 
+        this part of the main 'consult' rule uses if/else logic to check that in the case where the current character is 'a' and the current state *g*, if the rest of the list is empty in that moment (for the case of the word 'Alda'), then the state is manually moved to *z*, and if there are more letters to check, then moved to *j*.
+
+#### How to Use
 Run the Prolog file using a Prolog interpreter such as SWI-Prolog:
 
 ```bash
@@ -116,18 +124,18 @@ To test a set of predefined valid and non-valid words
 To test individual words in an interactive session:
 
 ```prolog
-?- consult_dic(['A','i','g','l','o','s'], a).
+?- consult(['A','i','g','l','o','s'], a).
 true.
 
-?- consult_dic(['B','l','a'], a).
+?- consult(['B','l','a'], a).
 false.
 ```
 
-### Prolog Time Complexity
+<!-- ### Prolog Time Complexity
 
 - **State Transition Lookup**: O(1) due to Prolog's indexing on the first argument of facts
 - **Word Processing**: O(n) where n is the input word length
-- **Backtracking**: Mitigated by the cut operator (!) to prevent exponential behavior
+- **Backtracking**: Mitigated by the cut operator (!) to prevent exponential behavior -->
 
 ## Regular Expressions (Regex)
 

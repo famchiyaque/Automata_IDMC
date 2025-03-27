@@ -13,41 +13,39 @@ move(f, z, 'u').
 move(g, z, 'a').  % 'a' goes to z from g if it's the last letter
 move(g, j, 'a').  % 'a' goes to j from g if it's not the last letter
 move(j, m, 'l').
-move(m, n, 'ó').
+move(m, n, 'acc_o').
 move(n, o, 'm').
 move(o, z, 'ë').
 move(h, k, 'u').
 move(k, z, 'a').
+% move(z, x, _). % if already at z, any character moves to rejected state x
 
 % Accepting state
 accept(z).
 
 % Fix misread characters (like 'Ã³' should be 'ó')
-fix_char('Ã³', 'ó').  % Handle the misread ó (showing as Ã³)
+fix_char('ó', 'acc_o').  % Handle the misread ó (showing as Ã³)
 fix_char(C, C).  % If the character is not 'Ã³', leave it unchanged.
 
 % Base case: If empty list and reached final state, accept.
-consult_dic([], CurrState) :-
+consult([], CurrState) :-
     accept(CurrState), !.
 
-% Allow words to end early at 'z'
-consult_dic([], CurrState) :-
-    move(CurrState, z, ''),
-    accept(z), !.
-
 % Recursive case: Process each character step-by-step
-consult_dic([Char1 | Rest], CurrState) :-
-    % Check if the current character is 'a' and we are in state g
-    (CurrState = g, Char1 = 'a' ->
-        % Check if 'a' is the last character in the word
-        (Rest = [] -> 
-            move(g, z, 'a');  % If 'a' is the last character, go to 'z'
-            move(g, j, 'a')   % Else, go to 'j'
-        )
-    ;
-        move(CurrState, NewState, Char1)  % Regular transition for other characters
+consult([CurrChar | Rest], CurrState) :-
+    fix_char(CurrChar, FixedChar),
+    (FixedChar = 'a', CurrState = g -> 
+        (Rest = [] ->
+            NewState = z;    % if rest is empty, then 'Alda' is moved directly to z state
+            NewState = j     % else, continue with extra letters after 'Alda'
+        );
+        move(CurrState, NewState, FixedChar)
     ),
-    consult_dic(Rest, NewState).
+    consult(Rest, NewState).
+
+% Example words for testing
+valid_words([['A', 'i', 'g', 'l', 'o', 's'], ['A', 'i', 'n', 'u'], ['A', 'l', 'd', 'a'], ['A', 'l', 'd', 'a', 'l', 'ó', 'm', 'ë'], ['A', 'l', 'q', 'u', 'a']]).
+invalid_words(['Ai', 'Aq', 'Aldalome', 'Aldad', 'aiglos', 'Aldo']).
 
 
 % Testing setup (you can provide lists of valid and invalid words)
@@ -57,7 +55,7 @@ run_tests :-
 
     writeln('Running tests for valid words...'),
     forall(member(W, VWords), (
-        (consult_dic(W, a) -> 
+        (consult(W, a) -> 
             format('PASSED: ~w is accepted.\n', [W]) 
         ; 
             format('FAILED: ~w was not a complete valid word.\n', [W])
@@ -66,13 +64,10 @@ run_tests :-
 
     writeln('Running tests for invalid words...'),
     forall(member(W, IWords), (
-        (consult_dic(W, a) -> 
-            format('FAILED: ~w should be rejected.\n', [W]) 
+        (consult(W, a) -> 
+            format('FAILED: ~w should have been rejected.\n', [W]) 
         ; 
             format('PASSED: ~w is rejected.\n', [W])
         )
     )).
 
-% Example words for testing
-valid_words(['Aiglos', 'Ainu', 'Alda', 'Aldalómë', 'Alqua']).
-invalid_words(['Ai', 'Aq']).

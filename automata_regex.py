@@ -26,7 +26,7 @@ def main():
                 print(f"{word}: {validate_word(word)}")
         
         elif choice == '2':
-            invalid_words = ["Axyz", "Bla", "Test", "123", "aiglos"]
+            invalid_words = ["Aldo", "Ai", "Aigloss", "aiglos", "Aldalome"]
             for word in invalid_words:
                 print(f"{word}: {validate_word(word)}")
         
