@@ -11,18 +11,18 @@ Dictionary:
     - Aldalómë
     - Alqua
 
-Lexical analysis, or scanning, is a part of natural language processing (NLP)
-where the source code is read character by character to produce tokens for the 
-next stage of compilation, and while the program is at it, verifies the grammar
-of the code, including syntax and spelling.
+Coursers says that Lexical analysis, or scanning, is a part of natural language processing (NLP) where the source code is read character by character to produce tokens for the next stage of compilation, and while the program is at it, verifies the grammar of the code, including syntax and spelling.
 
 According to the same source, there are two primary methods for this process:
 the <b>Loop and Switch</b> method, and the <b>Regular Expressions and Finite
 Automata</b> method.
+- [Coursera on Lexical Analysis](https://www.coursera.org/articles/lexical-analysis)
 
 For this project, we will be implementing the second of the primary types, meaning both the Automata and Regular Expressions.
 
-### 1. Automata Dictionary in Prolog
+### 1. Finite Automata in Prolog
+
+#### Theory
 
 An Automata are versions of finite state machines, or mechanisms to track 
 and map the state of something as input is handled. 
@@ -30,15 +30,16 @@ In this case, we want to track and map the state of word validity as we read the
 This image below shows the different states and transitions used to track the word as its characters are read one by one.
 ![Automata Img](automata_img.drawio.png)
 
-It's important to note here that this automata is a **Nondeterministic Finite Automata** (NFA), which according to Unstop.com, means that the automata may allow for
-multiple possible state transitions from one state to another with the same input.
+It's important to note here that this automata is a **Nondeterministic Finite Automata** (NFA), which according to Unstop.com, means that the automata may allow for multiple possible state transitions from one state to another with the same input.
+- [Unstop on DFA vs NFA](https://unstop.com/blog/difference-between-dfa-and-nfa)
 
 This is because there is a single case in our small dictionary where the word 'Alda' should move from the *g* state to the final accepted *z* state, meanwhile the word 'Aldalómë', having the exact same first four letters, will also be in the *g* state, but will need to continue on to another, non-final state for 
 continued validation.
 
-This is why a **Deterministic Finite Automata (DFA) cannot be used here**, which only allows for a single possible transition path between states.
+This is why a **Deterministic Finite Automata (DFA) cannot be used here**, which only allows for a single possible transition path between states with the same input.
 
 #### The Code
+Written in Prolog, the logic based and efficient, although less intuitive, progamming language, the automata can be implemented just by declaring the rules of the automata transitions, defining the accepted state, and recursively calling the same function which traverses the given word and uses the transitions to track the state.
 <!-- 1. **Prolog Dictionary**: A logic-based implementation using finite state automata to a set of words given from a small sample of Elvish Lord of the Rings words through explicit state transitions.
 2. **Python Regex Validator**: A pattern-matching implementation using regular expressions to validate words against predefined patterns.
 
@@ -138,21 +139,29 @@ true.
 false.
 ```
 
+    the above format should be used to test custom input, and always starting state a:
+    ['char', 'char', 'char', etc.]
+
 <!-- ### Prolog Time Complexity
 
 - **State Transition Lookup**: O(1) due to Prolog's indexing on the first argument of facts
 - **Word Processing**: O(n) where n is the input word length
 - **Backtracking**: Mitigated by the cut operator (!) to prevent exponential behavior -->
 
-## Regular Expressions (Regex)
+### 3. Regular Expressions (Regex) in Python
 
-### An NFA Approach with the RE Module
+#### Theory
+<!-- ### An NFA Approach with the RE Module -->
+The Regex method is much simpler than the automata in prolog, using an existing pattern-matching language that's very widely used and available. 
+With regex, a single expression using regex syntax can be used repeatedly to gauge whether the input is a match (valid word), or not (invalid word).
 
-The Python implementation uses regular expressions to match words against a predefined pattern:
+The Python implementation defines this expression using the RE python module, and simply returns checks whether the input is a match:
+
+#### The Code
 
 1. **Regular Expression Pattern**: 
    ```python
-   valid_pattern = re.compile(r'^(Aiglos|Ainu|Aid|Alg|Alq|Alo|Alda(lómë)?|Alqua?)$')
+   valid_pattern = re.compile(r'^(Aiglos|Ainu|Alda|Aldalómë|Alqua$')
    ```
    This pattern directly encodes all valid word patterns, including optional components.
 
@@ -177,12 +186,12 @@ The Python implementation uses regular expressions to match words against a pred
    ```
    Provides a user-friendly command-line interface for testing words.
 
-### Python Usage
+#### How to Use
 
 Run the script using Python:
 
 ```bash
-python automata_regex.py
+python lex_regex.py
 ```
 
 The program presents an interactive menu with these options:
@@ -208,28 +217,17 @@ Aldalómë: True
 Alqua: True
 ```
 
-### Python Time Complexity
+### Comparing Time Complexities
 
 - **Pattern Matching**: O(n) where n is the length of the input string
 - **Menu Operation**: O(1) per interaction
 - **Batch Testing**: O(m × n) where m is the number of words and n is the average word length
 
-## Valid Words
-
-Both implementations validate the same set of Elvish-inspired words:
-- Aiglos
-- Ainu
-- Alda
-- Aldalómë
-- Alqua
-
 ## References
 
 ### Prolog References
-- [SWI-Prolog Documentation](https://www.swi-prolog.org/pldoc/doc_for?object=manual)
-- [Finite State Machines in Prolog](https://www.metalevel.at/prolog/fsm)
-- [Prolog Programming for Artificial Intelligence](https://www.amazon.com/Programming-Artificial-Intelligence-International-Computer/dp/0321417461) by Ivan Bratko
+- [Unstop on DFA vs NFA](https://unstop.com/blog/difference-between-dfa-and-nfa)
+- [Coursera on Lexical Analysis](https://www.coursera.org/articles/lexical-analysis)
 
-### Python References
-- [Python Regular Expressions Documentation](https://docs.python.org/3/library/re.html)
-- [Regular Expression Syntax](https://docs.python.org/3/library/re.html#regular-expression-syntax)
+### Regex/Python References
+
