@@ -11,12 +11,12 @@ Dictionary:
     - Aldalómë
     - Alqua
 
-Coursers says that Lexical analysis, or scanning, is a part of natural language processing (NLP) where the source code is read character by character to produce tokens for the next stage of compilation, and while the program is at it, verifies the grammar of the code, including syntax and spelling.
+Coursera says that Lexical analysis, or scanning, is a part of natural language processing (NLP) where the source code is read character by character to produce tokens for the next stage of compilation, and while the program is at it, verifies the grammar of the code, including syntax and spelling.
 
 According to the same source, there are two primary methods for this process:
 the <b>Loop and Switch</b> method, and the <b>Regular Expressions and Finite
 Automata</b> method.
-- [Coursera on Lexical Analysis](https://www.coursera.org/articles/lexical-analysis)
+![Coursera on Lexical Analysis](https://www.coursera.org/articles/lexical-analysis)
 
 For this project, we will be implementing the second of the primary types, meaning both the Automata and Regular Expressions.
 
