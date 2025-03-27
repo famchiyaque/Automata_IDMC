@@ -4,6 +4,13 @@
 
 This project offers two approaches to validate a small dictionary of Elvish-inspired words, which in this case is supposed to simulate a very simple lexical analysis, like those used by real programming languages during compilation.
 
+Dictionary:
+    - Aiglos
+    - Ainu
+    - Alda
+    - Aldalómë
+    - Alqua
+
 Lexical analysis, or scanning, is a part of natural language processing (NLP)
 where the source code is read character by character to produce tokens for the 
 next stage of compilation, and while the program is at it, verifies the grammar
