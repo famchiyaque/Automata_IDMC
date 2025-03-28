@@ -216,18 +216,18 @@ Alqua: True
 **Time Complexity of NFA in Prolog**
 According to probably an expert on StackOverflow, the running time for an NFA is O(m^2(n)), where m is the number of nodes (or states in this case), and the O(n) for a DFA.<br>
 [DFAs vs NFAs time complexity](https://stackoverflow.com/questions/4580654/time-complexity-trade-offs-of-nfa-vs-dfa#:~:text=The%20construction%20time%20for%20a,DFA%20for%20a%20given%20string.)<br>
-Now, it's true that I use an NFA for my specific case, but there is only a single node with NFA like behavior (the *g* state which may lead to final state *z* or continue to *j* state with the same input), and the logic to decide the outcome of that behavior is a single if/else statement.
-So really my code behaves more like a DFA overall.
-And so the time complexity should be O(n), where n is the length of the input string. And this makes sense, because there is a recursive iteration for each letter in the input string (given there's a valid state transition), and a lack of any further complex logic.
-Since the scope of this code is so small, you could even consider it a time complexity of O(1), given that the longest it will ever run without fail is to iterate through each letter of the 'Aldalómë' word, which is only 8 iterations long.
+Now, it's true that I use an NFA for my specific case, but there is only a single node with NFA like behavior (the *g* state which may lead to final state *z* or continue to *j* state with the same input), and the logic to decide the outcome of that behavior is a single if/else statement.<br>
+So really my code behaves more like a DFA overall.<br>
+And so the time complexity should be O(n), where n is the length of the input string. And this makes sense, because there is a recursive iteration for each letter in the input string (given there's a valid state transition), and a lack of any further complex logic.<br>
+Since the scope of this code is so small, you could even consider it a time complexity of O(1), given that the longest it will ever run without fail is to iterate through each letter of the 'Aldalómë' word, which is only 8 iterations long.<br>
 
 **Time Complexity of Regex with Python**
 The RE module for python uses backtracking, which is NFA behavior, and implies the possibility of exponential time complexity when using lazy quantifiers like '*', or '?'.<br>
 [Python Regex Engine](https://www.oreilly.com/library/view/mastering-python-regular/9781783283156/ch05s03.html#:~:text=The%20re%20module%20uses%20a,Finite%20Automata%20(NFA)%20type.)<br>
-But in our case, due to the simplicity of the regular expression we are using, especially the definite '^' at the beginning and '$' at the end, the matching process isn't so free.
-The input will be compared character by character to the defined regular expression, and against each of the 5 available words, almost in a for-loop with an if (currChar === word[i]) type of way, that upon failing an exact match for the 5 words will simply end and return false.
-At least that's how I understand it, it was really hard to find a source that explains exactly how the re module functions actually traverse the given input to find matches.
-So in the end I think you could say that due to the very minimal amount of characters to check, the rigidity of the regular expression, and the exactness of the matching method, this code will have a time complexity of O(n) where n is the amount of valid words in the dictionary, and since n = 5, effectively virtually O(1).
+But in our case, due to the simplicity of the regular expression we are using, especially the definite '^' at the beginning and '$' at the end, the matching process isn't so free.<br>
+The input will be compared character by character to the defined regular expression, and against each of the 5 available words, almost in a for-loop with an if (currChar === word[i]) type of way, that upon failing an exact match for the 5 words will simply end and return false.<br>
+At least that's how I understand it, it was really hard to find a source that explains exactly how the re module functions actually traverse the given input to find matches.<br>
+So in the end I think you could say that due to the very minimal amount of characters to check, the rigidity of the regular expression, and the exactness of the matching method, this code will have a time complexity of O(n) where n is the amount of valid words in the dictionary, and since n = 5, effectively virtually O(1).<br>
 
 ## References
 
