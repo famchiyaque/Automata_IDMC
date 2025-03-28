@@ -214,6 +214,7 @@ Alqua: True
 ### Comparing Time Complexities
 
 **Time Complexity of NFA in Prolog**
+
 According to probably an expert on StackOverflow, the running time for an NFA is O(m^2(n)), where m is the number of nodes (or states in this case), and the O(n) for a DFA.<br>
 [DFAs vs NFAs time complexity](https://stackoverflow.com/questions/4580654/time-complexity-trade-offs-of-nfa-vs-dfa#:~:text=The%20construction%20time%20for%20a,DFA%20for%20a%20given%20string.)
 
@@ -226,6 +227,7 @@ And so the time complexity should be O(n), where n is the length of the input st
 Since the scope of this code is so small, you could even consider it a time complexity of O(1), given that the longest it will ever run without fail is to iterate through each letter of the 'Aldalómë' word, which is only 8 iterations long.
 
 **Time Complexity of Regex with Python**
+
 The RE module for python uses backtracking, which is NFA behavior, and implies the possibility of exponential time complexity when using lazy quantifiers like '*', or '?'.<br>
 [Python Regex Engine](https://www.oreilly.com/library/view/mastering-python-regular/9781783283156/ch05s03.html#:~:text=The%20re%20module%20uses%20a,Finite%20Automata%20(NFA)%20type.)
 
