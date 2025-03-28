@@ -40,10 +40,6 @@ This is why a **Deterministic Finite Automata (DFA) cannot be used here**, which
 
 #### The Code
 Written in Prolog, the logic based and efficient, although less intuitive, progamming language, the automata can be implemented just by declaring the rules of the automata transitions, defining the accepted state, and recursively calling the same function which traverses the given word and uses the transitions to track the state.
-<!-- 1. **Prolog Dictionary**: A logic-based implementation using finite state automata to a set of words given from a small sample of Elvish Lord of the Rings words through explicit state transitions.
-2. **Python Regex Validator**: A pattern-matching implementation using regular expressions to validate words against predefined patterns.
-
-Both implementations serve the same purpose but showcase different programming paradigms and validation techniques. -->
 
 1. **Knowledge Base**:
    ```prolog
@@ -142,16 +138,10 @@ false.
 the above format should be used to test custom input, and always starting state a:<br>
     ['char', 'char', 'char', etc.]
 
-<!-- ### Prolog Time Complexity
-
-- **State Transition Lookup**: O(1) due to Prolog's indexing on the first argument of facts
-- **Word Processing**: O(n) where n is the input word length
-- **Backtracking**: Mitigated by the cut operator (!) to prevent exponential behavior -->
-
 ### 2. Regular Expressions (Regex) in Python
 
 #### Theory
-<!-- ### An NFA Approach with the RE Module -->
+
 The Regex method is much simpler than the automata in prolog, using an existing pattern-matching language that's very widely used and available. 
 With regex, a single expression using regex syntax can be used repeatedly to gauge whether the input is a match (valid word), or not (invalid word).
 
@@ -161,16 +151,19 @@ The Python implementation defines this expression using the RE python module, an
 
 1. **Regular Expression Pattern**: 
    ```python
-   valid_pattern = re.compile(r'^(Aiglos|Ainu|Alda|Aldalómë|Alqua$')
+   valid_pattern = re.compile(r'^A(iglos|inu|lqua|lda|ldalómë)$')
    ```
-   This pattern directly encodes all valid word patterns, including optional components.
+   The compile function creates a match object to compare future input to, in other words it's our regular expression to use.
 
 2. **Validation Function**:
    ```python
    def validate_word(word):
-       return bool(valid_pattern.match(word))
+       return bool(valid_pattern.fullmatch(word))
    ```
-   Returns a boolean indicating whether the word matches the pattern.
+   Here the '.fullmatch' function is used, which takes the input and looks for a match from the beginning of the given regular expression, which is better than '.search' or '.match' for us since we don't want any extra letters at the beginning or end of our word, just exact full matches.
+   [RE Module Documentation](https://docs.python.org/3/library/re.html)
+   It returns a boolean indicating whether the word matches the pattern.
+
 
 3. **Interactive CLI**:
    ```python
@@ -219,15 +212,29 @@ Alqua: True
 
 ### Comparing Time Complexities
 
-- **Pattern Matching**: O(n) where n is the length of the input string
-- **Menu Operation**: O(1) per interaction
-- **Batch Testing**: O(m × n) where m is the number of words and n is the average word length
+**Time Complexity of NFA in Prolog**
+According to probably an expert on StackOverflow, the running time for an NFA is O(m^2(n)), where m is the number of nodes (or states in this case), and the O(n) for a DFA.
+![DFAs vs NFAs time complexity](https://stackoverflow.com/questions/4580654/time-complexity-trade-offs-of-nfa-vs-dfa#:~:text=The%20construction%20time%20for%20a,DFA%20for%20a%20given%20string.)
+Now, it's true that I use an NFA for my specific case, but there is only a single node with NFA like behavior (the *g* state which may lead to final state *z* or continue to *j* state with the same input), and the logic to decide the outcome of that behavior is a single if/else statement.
+So really my code behaves more like a DFA overall.
+And so the time complexity should be O(n), where n is the length of the input string. And this makes sense, because there is a recursive iteration for each letter in the input string (given there's a valid state transition), and a lack of any further complex logic.
+Since the scope of this code is so small, you could even consider it a time complexity of O(1), given that the longest it will ever run without fail is to iterate through each letter of the 'Aldalómë' word, which is only 8 iterations long.
+
+**Time Complexity of Regex with Python**
+The RE module for python uses backtracking, which is NFA behavior, and implies the possibility of exponential time complexity when using lazy quantifiers like '*', or '?'.
+![Python Regex Engine](https://www.oreilly.com/library/view/mastering-python-regular/9781783283156/ch05s03.html#:~:text=The%20re%20module%20uses%20a,Finite%20Automata%20(NFA)%20type.)
+But in our case, due to the simplicity of the regular expression we are using, especially the definite '^' at the beginning and '$' at the end, the matching process isn't so free.
+The input will be compared character by character to the defined regular expression, and against each of the 5 available words, almost in a for-loop with an if (currChar === word[i]) type of way, that upon failing an exact match for the 5 words will simply end and return false.
+At least that's how I understand it, it was really hard to find a source that explains exactly how the re module functions actually traverse the given input to find matches.
+So in the end I think you could say that due to the very minimal amount of characters to check, the rigidity of the regular expression, and the exactness of the matching method, this code will have a time complexity of O(n) where n is the amount of valid words in the dictionary, and since n = 5, effectively virtually O(1).
 
 ## References
 
 ### Prolog References
 - [Unstop on DFA vs NFA](https://unstop.com/blog/difference-between-dfa-and-nfa)
 - [Coursera on Lexical Analysis](https://www.coursera.org/articles/lexical-analysis)
+- [DFAs vs NFAs time complexity](https://stackoverflow.com/questions/4580654/time-complexity-trade-offs-of-nfa-vs-dfa#:~:text=The%20construction%20time%20for%20a,DFA%20for%20a%20given%20string.)
 
 ### Regex/Python References
-
+- [RE Module Documentation](https://docs.python.org/3/library/re.html)
+- [Python Regex Engine](https://www.oreilly.com/library/view/mastering-python-regular/9781783283156/ch05s03.html#:~:text=The%20re%20module%20uses%20a,Finite%20Automata%20(NFA)%20type.)

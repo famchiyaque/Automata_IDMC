@@ -8,7 +8,7 @@ import re
 valid_pattern = re.compile(r'^A(iglos|inu|lqua|lda|ldalómë)$')
 
 def validate_word(word):
-    return bool(valid_pattern.match(word))
+    return bool(valid_pattern.fullmatch(word))
 
 def main():
     while True:
