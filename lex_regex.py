@@ -5,7 +5,7 @@ import re
 # valid_pattern = re.compile(r'^(A(i(g|n|d)|l(g|q|o)|d(lómë)?|q(ua)?))$')
 # Add the re.IGNORECASE flag to make it case-insensitive
 # valid_pattern = re.compile(r'^(A(i(g|n|d)|l(g|q|o)|d(lómë)?|q(ua)?)).*$', re.IGNORECASE)
-valid_pattern = re.compile(r'^(Aiglos|Ainu|Aid|Alg|Alq|Alo|Alda(lómë)?|Alqua?)$')
+valid_pattern = re.compile(r'^A(iglos|inu|lqua|lda|ldalómë)$')
 
 def validate_word(word):
     return bool(valid_pattern.match(word))
